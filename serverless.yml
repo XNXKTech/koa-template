@@ -1,0 +1,23 @@
+component: koa
+name: ${project_name}
+stage: prod
+
+inputs:
+  region: ap-shanghai
+  functionName: ${name}
+  serviceName: ${name}_gateway
+  runtime: Nodejs12.16
+  entryFile: index.js
+  src: ./dist
+  functionConf:
+    timeout: 10
+      memorySize: 128
+  apigatewayConf:
+    isDisabled: false
+    enableCORS: true
+    protocols:
+      - https
+    serviceTimeout: 15
+  layers:
+    - name: koa
+      version: 1

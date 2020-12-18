@@ -1,0 +1,113 @@
+name: 'Deploy Serverless'
+
+on: # rebuild any PRs and main branch changes
+  push:
+    branches:
+      - main
+    paths:
+      - 'dist/index.js'
+  workflow_dispatch:
+    inputs:
+      version:
+        required: false
+        description: 'Version (eg. v2.5.0)'
+        default: latest
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [ '12.16' ]
+    name: Deploy Serverless to Tencent
+    steps:
+
+      - name: Checkout Latest Stable Version
+        if: ${{ github.event.inputs.version }} == 'latest'
+        uses: actions/checkout@v2
+
+      - name: Checkout ${{ github.event.inputs.version }}
+        if: github.event.inputs.version != 'latest'
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.version }}
+
+      - name: Setup Node ${{ matrix.node }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Get yarn cache
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - run: rm -f .yarnclean
+      - name: Install dependencies
+        run: yarn --frozen-lockfile
+        env:
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+          HUSKY_SKIP_INSTALL: true
+
+      - run: yarn build
+
+      - name: Setup Serverless
+        uses: teakowa/setup-serverless@main
+        with:
+          provider: tencent
+        env:
+          TENCENT_APPID: ${{ secrets.TENCENTCLOUD_APP_ID }}
+          TENCENT_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
+          TENCENT_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY}}
+          SERVERLESS_PLATFORM_VENDOR: tencent
+
+      - name: Deploy Serverless
+        run: sls deploy
+
+      - name: Slack Notification
+        if: success()
+        uses: tokorom/action-slack-incoming-webhook@v1.1.3
+        env:
+          INCOMING_WEBHOOK_URL: ${{ secrets.CI_DEPLOY_WEBHOOK }}
+        with:
+          text: Successful deploy of ${{ github.repository}}
+          attachments: |
+            [
+              {
+                "color": "good",
+                "author_name": "${{ github.actor }}",
+                "author_icon": "${{ github.event.sender.avatar_url }}",
+                "title": "${{ github.event.head_commit.message }}",
+                "title_link": "${{ github.event.repository.url }}/commit/${{ github.sha }}",
+                "text": "查看 Workflow <${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}|构建日志>",
+                "fields": [
+                  {
+                    "title": "Compare URL",
+                    "value": "${{ github.event.compare }}"
+                  }
+                ]
+              }
+            ]
+      - name: Slack Notification
+        if: failure()
+        uses: tokorom/action-slack-incoming-webhook@v1.1.3
+        env:
+          INCOMING_WEBHOOK_URL: ${{ secrets.CI_DEPLOY_WEBHOOK }}
+        with:
+          text: Failures deploy of ${{ github.repository}}
+          attachments: |
+            [
+              {
+                "color": "danger",
+                "author_name": "${{ github.actor }}",
+                "author_icon": "${{ github.event.sender.avatar_url }}",
+                "title": "${{ github.event.head_commit.message }}",
+                "title_link": "${{ github.event.repository.url }}/commit/${{ github.sha }}",
+                "text": "查看 Workflow <${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}|构建日志>",
+              }
+            ]

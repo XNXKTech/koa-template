@@ -1,0 +1,58 @@
+{
+  "name": "koa-template",
+  "version": "1.0.0",
+  "description": "koa-template",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "npx tsc --build && ncc build lib/main.js -o dist",
+    "dev": "npm run format && npm run lint && nodemon --watch 'src/**/*' -e ts,tsx --exec ts-node --files src/main.ts",
+    "format": "prettier --write **/*.ts",
+    "format-check": "prettier --check **/*.ts",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "test": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/United-Music/koa-template.git"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/United-Music/koa-template/issues"
+  },
+  "homepage": "https://github.com/United-Music/koa-template#readme",
+  "dependencies": {
+    "@sentry/node": "^5.29.2",
+    "koa": "^2.13.0",
+    "koa-bodyparser": "^4.3.0",
+    "koa-json": "^2.0.2",
+    "koa-logger": "^3.2.1",
+    "koa-router": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.18",
+    "@types/koa": "^2.11.6",
+    "@types/koa-bodyparser": "^4.3.0",
+    "@types/koa-json": "^2.0.18",
+    "@types/koa-logger": "^3.1.1",
+    "@types/koa-router": "^7.4.1",
+    "@types/node": "^14.14.12",
+    "@typescript-eslint/eslint-plugin": "^4.10.0",
+    "@typescript-eslint/parser": "^4.9.1",
+    "@vercel/ncc": "^0.25.1",
+    "eslint": "^7.15.0",
+    "eslint-config-prettier": "^7.0.0",
+    "eslint-plugin-jest": "^24.1.3",
+    "eslint-plugin-prettier": "^3.2.0",
+    "jest": "^26.6.3",
+    "nodemon": "^2.0.6",
+    "prettier": "^2.2.1",
+    "ts-jest": "^26.4.4",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.2"
+  },
+  "engines": {
+    "node": ">=12.16.3"
+  }
+}

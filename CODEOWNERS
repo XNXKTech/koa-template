@@ -1,0 +1,4 @@
+.chglog @United-Music/infra
+.github @United-Music/infra
+serverless.yml @United-Music/infra
+* @United-Music/back-end
