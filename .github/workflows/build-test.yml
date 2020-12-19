@@ -67,12 +67,6 @@ jobs:
       - run: yarn
       - run: yarn build
 
-      - name: Commit changed files
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Automatic build commit
-          branch: ${{ github.head_ref }}
-
   eslint:
     name: 'Eslint'
     runs-on: ubuntu-latest
