@@ -4,8 +4,8 @@
   "description": "koa-template",
   "main": "dist/index.js",
   "scripts": {
-    "build": "npx tsc --build && ncc build lib/main.js -o dist",
-    "dev": "npm run format && npm run lint && nodemon --watch 'src/**/*' -e ts,tsx --exec ts-node --files src/main.ts",
+    "build": "npx etsc --build && ncc build lib/main.js -o dist",
+    "dev": "npm run format && npm run lint && nodemon --watch 'src/**/*' -e ts,tsx --exec 'etsc && ts-node --files src/main.ts'",
     "format": "prettier --write **/*.ts",
     "format-check": "prettier --check **/*.ts",
     "lint": "eslint src/**/*.ts",
@@ -41,6 +41,7 @@
     "@typescript-eslint/eslint-plugin": "^4.10.0",
     "@typescript-eslint/parser": "^4.9.1",
     "@vercel/ncc": "^0.25.1",
+    "esbuild-node-tsc": "^1.0.5",
     "eslint": "^7.15.0",
     "eslint-config-prettier": "^7.0.0",
     "eslint-plugin-jest": "^24.1.3",
