@@ -14,6 +14,7 @@ inputs:
       memorySize: 128
     environment:
       variables:
+        TZ: Asia/Shanghai
         SENTRY_DSN: ${env:SENTRY_DSN}
   apigatewayConf:
     isDisabled: false
