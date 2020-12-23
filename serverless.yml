@@ -23,5 +23,5 @@ inputs:
       - https
     serviceTimeout: 15
   layers:
-    - name: koa
+    - name: koa-template
       version: 1
