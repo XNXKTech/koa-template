@@ -15,8 +15,6 @@ const router: Router = new Router();
 const port = process.env.PORT || 3000;
 
 Sentry.init({
-  dsn: '',
-
   tracesSampleRate: 1.0
 });
 

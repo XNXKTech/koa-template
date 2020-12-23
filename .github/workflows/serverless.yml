@@ -13,6 +13,8 @@ on: # rebuild any PRs and main branch changes
         description: 'Version (eg. v2.5.0)'
         default: latest
 
+env:
+  SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
 jobs:
   deploy:
     runs-on: ubuntu-latest

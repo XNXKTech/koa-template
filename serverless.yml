@@ -12,6 +12,9 @@ inputs:
   functionConf:
     timeout: 10
       memorySize: 128
+    environment:
+      variables:
+        SENTRY_DSN: ${env:SENTRY_DSN}
   apigatewayConf:
     isDisabled: false
     enableCORS: true
