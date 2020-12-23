@@ -16,6 +16,7 @@ inputs:
       variables:
         TZ: Asia/Shanghai
         SENTRY_DSN: ${env:SENTRY_DSN}
+        SENTRY_ENVIRONMENT: ${env:SENTRY_ENVIRONMENT}
   apigatewayConf:
     isDisabled: false
     enableCORS: true
