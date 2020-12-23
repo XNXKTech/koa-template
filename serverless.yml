@@ -11,7 +11,7 @@ inputs:
   src: ./dist
   functionConf:
     timeout: 10
-      memorySize: 128
+    memorySize: 128
     environment:
       variables:
         TZ: Asia/Shanghai
