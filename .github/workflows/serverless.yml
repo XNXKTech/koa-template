@@ -74,44 +74,30 @@ jobs:
         run: sls deploy
 
       - name: Slack Notification
-        if: success()
-        uses: tokorom/action-slack-incoming-webhook@v1.1.3
+        if: always()
+        uses: 8398a7/action-slack@v3
         env:
-          INCOMING_WEBHOOK_URL: ${{ secrets.CI_DEPLOY_WEBHOOK }}
+          SLACK_WEBHOOK_URL: ${{ secrets.CI_DEPLOY_WEBHOOK }}
         with:
-          text: Successful deploy of ${{ github.repository}}
-          attachments: |
-            [
-              {
-                "color": "good",
-                "author_name": "${{ github.actor }}",
-                "author_icon": "${{ github.event.sender.avatar_url }}",
-                "title": "${{ github.event.head_commit.message }}",
-                "title_link": "${{ github.event.repository.url }}/commit/${{ github.sha }}",
-                "text": "查看 Workflow <${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}|构建日志>",
-                "fields": [
+          status: custom
+          custom_payload: |
+            {
+              text: Successful deploy of ${{ github.repository}}
+              attachments:
+                [
                   {
-                    "title": "Compare URL",
-                    "value": "${{ github.event.compare }}"
+                    color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
+                    author_name: "${{ github.actor }}",
+                    author_icon: "${{ github.event.sender.avatar_url }}",
+                    title: "${{ process.env.AS_MESSAGE }}",
+                    title_link: "${{ github.event.repository.url }}/commit/${{ github.sha }}",
+                    text: "查看 Workflow <${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}|构建日志>",
+                    fields: [
+                      {
+                        title: "Compare URL",
+                        value: "${{ github.event.compare }}"
+                      }
+                    ]
                   }
                 ]
-              }
-            ]
-      - name: Slack Notification
-        if: failure()
-        uses: tokorom/action-slack-incoming-webhook@v1.1.3
-        env:
-          INCOMING_WEBHOOK_URL: ${{ secrets.CI_DEPLOY_WEBHOOK }}
-        with:
-          text: Failures deploy of ${{ github.repository}}
-          attachments: |
-            [
-              {
-                "color": "danger",
-                "author_name": "${{ github.actor }}",
-                "author_icon": "${{ github.event.sender.avatar_url }}",
-                "title": "${{ github.event.head_commit.message }}",
-                "title_link": "${{ github.event.repository.url }}/commit/${{ github.sha }}",
-                "text": "查看 Workflow <${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}|构建日志>",
-              }
-            ]
+            }
