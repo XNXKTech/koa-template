@@ -13,6 +13,8 @@
   ],
   "rules": {
     "quotes": ["error", "single"],
+    "no-invalid-this": "off",
+    "@typescript-eslint/no-invalid-this": ["error"],
     "@typescript-eslint/no-explicit-any": 1,
     "@typescript-eslint/no-inferrable-types": [
       "warn", {
