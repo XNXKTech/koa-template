@@ -3,6 +3,7 @@ on: [pull_request]
 
 jobs:
   commitlint:
+    if: "!github.actor == 'dependabot'"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
