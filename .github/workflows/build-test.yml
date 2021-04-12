@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ '12.16' ]
+        node: [ '15' ]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -73,7 +73,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ '12.16' ]
+        node: [ '15' ]
     steps:
       - uses: actions/checkout@v2
       - name: Setup Node ${{ matrix.node }}
@@ -104,7 +104,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ '12.16' ]
+        node: [ '15' ]
     steps:
       - uses: actions/checkout@v2
       - name: Setup Node ${{ matrix.node }}
