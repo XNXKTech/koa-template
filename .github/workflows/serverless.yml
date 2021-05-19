@@ -61,7 +61,7 @@ jobs:
       - run: yarn build
 
       - name: Setup Serverless
-        uses: teakowa/setup-serverless@main
+        uses: teakowa/setup-serverless@v1.1.2
         with:
           provider: tencent
         env:
