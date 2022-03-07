@@ -40,7 +40,7 @@ jobs:
       matrix:
         node: [ '15' ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 1
           ref: ${{ github.head_ref }}
@@ -75,7 +75,7 @@ jobs:
       matrix:
         node: [ '15' ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup Node ${{ matrix.node }}
         uses: actions/setup-node@v2.5.1
         with:
@@ -106,7 +106,7 @@ jobs:
       matrix:
         node: [ '15' ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup Node ${{ matrix.node }}
         uses: actions/setup-node@v2.5.1
         with:
